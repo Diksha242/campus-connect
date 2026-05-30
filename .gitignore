@@ -1,0 +1,30 @@
+# Python
+*.py[cod]
+*$py.class
+__pycache__/
+.pytest_cache/
+
+# Virtual environment
+.env
+.venv/
+venv/
+ENV/
+env/
+
+# Django
+db.sqlite3
+/staticfiles/
+media/
+*.log
+
+# IDE / editor
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# OS files
+.DS_Store
+Thumbs.db

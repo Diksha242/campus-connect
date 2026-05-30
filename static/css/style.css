@@ -1,0 +1,16 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.nav-link{
+    transition: 0.3s;
+}
+
+.nav-link:hover{
+    background-color: #f1f1f1;
+    border-radius: 12px;
+}
+
+.card{
+    border-radius: 20px;
+}

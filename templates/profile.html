@@ -1,0 +1,87 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ profile_user.username }}'s Profile - CampusConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body style="background-color: #F5F7FB;">
+
+{% include 'components/navbar.html' %}
+
+<div class="d-flex">
+    {% include 'components/sidebar.html' %}
+
+    <div class="container-fluid p-4" style="flex: 1; max-width: 800px;">
+        <!-- Profile Header -->
+        <div class="card border-0 shadow-sm rounded-4 p-5 mb-4">
+            <div class="text-center mb-4">
+                <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=400&h=400&fit=crop" 
+                     width="120" height="120" class="rounded-circle mb-3" style="object-fit: cover;">
+                <h2 class="fw-bold mb-2">{{ profile_user.get_full_name|default:profile_user.username }}</h2>
+                <p class="text-muted mb-3">@{{ profile_user.username }}</p>
+                
+                {% if profile.bio %}
+                <p class="mb-3">{{ profile.bio }}</p>
+                {% endif %}
+
+                <div class="d-flex justify-content-center gap-4 mb-3">
+                    <div>
+                        <h5 class="fw-bold">{{ posts.count }}</h5>
+                        <small class="text-muted">Posts</small>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold">{{ profile.followers.count }}</h5>
+                        <small class="text-muted">Followers</small>
+                    </div>
+                </div>
+
+                {% if user.is_authenticated and user == profile_user %}
+                    <a href="{% url 'edit_profile' %}" class="btn btn-primary rounded-pill">Edit Profile</a>
+                {% endif %}
+            </div>
+
+            {% if profile.department or profile.year %}
+            <div class="text-center">
+                {% if profile.department %}
+                <p class="mb-1"><strong>Department:</strong> {{ profile.department }}</p>
+                {% endif %}
+                {% if profile.year %}
+                <p class="mb-1"><strong>Year:</strong> {{ profile.year }}</p>
+                {% endif %}
+                {% if profile.interests %}
+                <p class="text-muted"><strong>Interests:</strong> {{ profile.interests }}</p>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- User's Posts -->
+        <h5 class="fw-bold mb-3">Posts</h5>
+        {% if posts %}
+            {% for post in posts %}
+            <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
+                <h5 class="fw-bold">{{ post.title }}</h5>
+                <p class="text-dark mb-3">{{ post.content }}</p>
+                {% if post.image %}
+                <img src="{{ post.image.url }}" class="img-fluid rounded-3 mb-3">
+                {% endif %}
+                <small class="text-muted">{{ post.created_at|date:"M d, Y" }}</small>
+            </div>
+            {% endfor %}
+        {% else %}
+            <div class="text-center py-5">
+                <p class="text-muted">No posts yet</p>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

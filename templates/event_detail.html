@@ -1,0 +1,52 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ event.title }} - CampusConnect</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background-color: #F5F7FB;">
+
+{% include 'components/navbar.html' %}
+
+<div class="d-flex">
+    {% include 'components/sidebar.html' %}
+
+    <div class="container-fluid p-4" style="flex: 1; max-width: 800px;">
+        <div class="card border-0 shadow-sm rounded-4 p-5">
+            <h2 class="fw-bold mb-3">{{ event.title }}</h2>
+            
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <p><strong>📅 Date:</strong> {{ event.date|date:"M d, Y H:i" }}</p>
+                    <p><strong>📍 Location:</strong> {{ event.location }}</p>
+                    <p><strong>👥 Attendees:</strong> {{ event.attendees.count }}/{{ event.capacity }}</p>
+                </div>
+                <div class="col-md-6">
+                    <p><strong>Organizer:</strong> {{ event.organizer.username }}</p>
+                </div>
+            </div>
+
+            <h5 class="fw-bold mb-2">About</h5>
+            <p class="text-dark mb-4">{{ event.description }}</p>
+
+            {% if user.is_authenticated %}
+            <form method="POST">
+                {% csrf_token %}
+                {% if is_attending %}
+                    <button type="submit" class="btn btn-outline-danger rounded-pill">Cancel Attendance</button>
+                {% else %}
+                    <button type="submit" class="btn btn-primary rounded-pill">Attend Event</button>
+                {% endif %}
+            </form>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
