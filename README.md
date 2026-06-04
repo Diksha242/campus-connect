@@ -1,18 +1,64 @@
 🎓 Campus Connect
-A full-featured Django-based college social platform that brings campus life online — students can connect, share posts, join clubs, attend events, trade items, and manage everything related to campus in one place.
+A full-featured Django-based college social platform that brings campus life online  here students can connect, share posts, join clubs, attend events, trade items, and manage everything related to campus in one place.
 
-🚀 Live Demo
+ Live Demo
 
-🔗 Coming soon — deploying on Railway
-
-
-📸 Screenshots
-
-(Add screenshots of your feed, profile, marketplace, and events pages here)
+🔗 Coming soon — deploying on Render
 
 
-✨ Features
-ModuleDescription🔐 AuthenticationSignup, login, logout with session management👤 User ProfilesBio, profile picture, department, year, interests👥 Follow SystemFollow / unfollow users, followers and following lists📰 Social FeedCreate posts with images, like, comment, delete💬 Direct MessagingReal-time chat UI between users🔔 NotificationsAlerts for likes, comments, follows, messages, events📅 EventsCreate events with date, location, capacity — RSVP system🏛️ ClubsCreate and join college clubs, view member lists🛒 MarketplaceBuy and sell books, electronics, clothes, furniture, and more🔍 Lost & FoundPost lost or found items with status tracking🌐 DiscoveryFind and connect with students not yet followed📢 Student VoicePlatform for student opinions and announcements📚 ResourcesAcademic resources and links
+# Features
+
+### Secure Authentication
+
+Users can create an account, log in, and log out securely. Session management ensures a smooth and safe experience across the platform.
+
+### Personalized User Profiles
+
+Every student gets a customizable profile where they can add a bio, upload a profile picture, specify their department and academic year, and share their interests.
+
+### Connect with Other Students
+
+Build your network by following classmates and discovering new people. Users can easily view their followers and the people they follow.
+
+### Social Feed
+
+Share updates, campus moments, and experiences through posts. Students can upload images, like posts, leave comments, and manage their own content.
+
+### Direct Messaging
+
+Communicate privately with other students through an intuitive real-time chat interface designed for quick and seamless conversations.
+
+### Notifications
+
+Stay informed with instant notifications for new followers, likes, comments, messages, event updates, and other important activities.
+
+### Events Management
+
+Create and promote college events by adding details such as date, location, and participant limits. Students can RSVP and keep track of upcoming activities.
+
+### Student Clubs
+
+Form communities around shared interests by creating clubs, joining existing ones, and exploring club member directories.
+
+### Campus Marketplace
+
+Buy and sell items within the student community, including books, electronics, furniture, clothing, and other essentials.
+
+### Lost & Found
+
+Help students recover misplaced belongings through dedicated lost-and-found listings with status tracking and updates.
+
+### Student Discovery
+
+Explore and connect with students across different departments and years, making it easier to expand your campus network.
+
+### Student Voice
+
+A space where students can share opinions, discuss ideas, make announcements, and engage in meaningful campus conversations.
+
+### Academic Resources
+
+Access and share useful study materials, educational links, academic resources, and learning opportunities with fellow students.
 
 🛠️ Tech Stack
 
@@ -21,7 +67,7 @@ Frontend: HTML5, CSS3, JavaScript
 Database: SQLite (development) / PostgreSQL (production)
 Media Handling: Pillow
 Static Files: WhiteNoise
-Deployment: Gunicorn, Railway / Render
+Deployment: Gunicorn, Render
 
 
 📁 Project Structure
