@@ -21,8 +21,15 @@
         <!-- Profile Header -->
         <div class="card border-0 shadow-sm rounded-4 p-5 mb-4">
             <div class="text-center mb-4">
-                <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=400&h=400&fit=crop" 
-                     width="120" height="120" class="rounded-circle mb-3" style="object-fit: cover;">
+                {% if profile.profile_picture %}
+                    <a href="{% if is_own_profile %}{% url 'edit_profile' %}{% endif %}" class="d-inline-block">
+                        <img src="{{ profile.profile_picture.url }}" 
+                             width="120" height="120" class="rounded-circle mb-3" style="object-fit: cover;{% if is_own_profile %} cursor: pointer;{% endif %}">
+                    </a>
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=400&h=400&fit=crop" 
+                         width="120" height="120" class="rounded-circle mb-3" style="object-fit: cover;">
+                {% endif %}
                 <h2 class="fw-bold mb-2">{{ profile_user.get_full_name|default:profile_user.username }}</h2>
                 <p class="text-muted mb-3">@{{ profile_user.username }}</p>
                 
@@ -32,16 +39,28 @@
 
                 <div class="d-flex justify-content-center gap-4 mb-3">
                     <div>
-                        <h5 class="fw-bold">{{ posts.count }}</h5>
+                        <h5 class="fw-bold">{{ posts_count }}</h5>
                         <small class="text-muted">Posts</small>
                     </div>
                     <div>
-                        <h5 class="fw-bold">{{ profile.followers.count }}</h5>
+                        <h5 class="fw-bold"><a href="{% url 'profile_followers' profile_user.username %}" class="text-dark text-decoration-none">{{ profile.followers.count }}</a></h5>
                         <small class="text-muted">Followers</small>
+                    </div>
+                    <div>
+                        <h5 class="fw-bold"><a href="{% url 'profile_following' profile_user.username %}" class="text-dark text-decoration-none">{{ profile_user.following.count }}</a></h5>
+                        <small class="text-muted">Following</small>
                     </div>
                 </div>
 
-                {% if user.is_authenticated and user == profile_user %}
+                {% if not is_own_profile %}
+                    <form action="{% url 'follow_user' profile_user.username %}" method="POST" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn {% if is_following %}btn-outline-secondary{% else %}btn-primary{% endif %} rounded-pill">
+                            {% if is_following %}Unfollow{% else %}Follow{% endif %}
+                        </button>
+                    </form>
+                    <a href="{% url 'chat' profile_user.username %}" class="btn btn-outline-primary rounded-pill ms-2">Message</a>
+                {% else %}
                     <a href="{% url 'edit_profile' %}" class="btn btn-primary rounded-pill">Edit Profile</a>
                 {% endif %}
             </div>
@@ -66,7 +85,15 @@
         {% if posts %}
             {% for post in posts %}
             <div class="card border-0 shadow-sm rounded-4 p-4 mb-4">
-                <h5 class="fw-bold">{{ post.title }}</h5>
+                <div class="d-flex justify-content-between align-items-start mb-3">
+                    <h5 class="fw-bold">{{ post.title }}</h5>
+                    {% if user == profile_user %}
+                    <form method="POST" action="{% url 'delete_post' post.id %}" class="m-0">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-sm btn-outline-danger rounded-pill">Delete</button>
+                    </form>
+                    {% endif %}
+                </div>
                 <p class="text-dark mb-3">{{ post.content }}</p>
                 {% if post.image %}
                 <img src="{{ post.image.url }}" class="img-fluid rounded-3 mb-3">

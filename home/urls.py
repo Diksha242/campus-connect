@@ -26,8 +26,13 @@ urlpatterns = [
 
     # Profile
     path('profile/', views.profile, name='profile'),
-    path('profile/<str:username>/', views.profile, name='user_profile'),
     path('profile/edit/', views.edit_profile, name='edit_profile'),
+    path('profile/<str:username>/follow/', views.follow_user, name='follow_user'),
+    path('profile/<str:username>/followers/', views.followers, name='profile_followers'),
+    path('profile/<str:username>/following/', views.following, name='profile_following'),
+    path('profile/<str:username>/', views.profile, name='user_profile'),
+    path('post/<int:post_id>/delete/', views.delete_post, name='delete_post'),
+    path('discover-people/', views.discover_people, name='discover_people'),
 
     # Posts
     path('create-post/', views.create_post, name='create_post'),

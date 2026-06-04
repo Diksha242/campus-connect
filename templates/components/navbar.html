@@ -50,18 +50,28 @@
                 <!-- Profile -->
                 <div class="d-flex align-items-center">
 
-                    <img
-                        src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=400&h=400&fit=crop"
-                        width="45"
-                        height="45"
-                        class="rounded-circle"
-                        style="object-fit: cover;"
-                    >
+                    {% if user.profile.profile_picture %}
+                        <img
+                            src="{{ user.profile.profile_picture.url }}"
+                            width="45"
+                            height="45"
+                            class="rounded-circle"
+                            style="object-fit: cover;"
+                        >
+                    {% else %}
+                        <img
+                            src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?q=80&w=400&h=400&fit=crop"
+                            width="45"
+                            height="45"
+                            class="rounded-circle"
+                            style="object-fit: cover;"
+                        >
+                    {% endif %}
 
                     <div class="ms-2">
 
                         <h6 class="mb-0 fw-bold">
-                            {{ user.username }}
+                            <a href="{% url 'user_profile' user.username %}" class="text-dark text-decoration-none">{{ user.username }}</a>
                         </h6>
 
                         <small class="text-muted">

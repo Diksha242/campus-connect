@@ -75,15 +75,94 @@ def profile(request, username=None):
     
     profile = user.profile
     posts = user.posts.all()
-    is_following = request.user.profile.followers.filter(id=user.id).exists()
+    is_following = profile.followers.filter(id=request.user.id).exists() if request.user != user else False
     
     context = {
         'profile_user': user,
         'profile': profile,
         'posts': posts,
+        'posts_count': posts.count(),
         'is_following': is_following,
+        'is_own_profile': request.user == user,
+        'followers': profile.followers.all(),
+        'following': User.objects.filter(profile__followers=user),
     }
     return render(request, 'profile.html', context)
+
+@login_required(login_url='login')
+@require_POST
+def follow_user(request, username):
+    target_user = get_object_or_404(User, username=username)
+    if request.user == target_user:
+        return redirect('user_profile', username=username)
+
+    profile = target_user.profile
+    if request.user in profile.followers.all():
+        profile.followers.remove(request.user)
+    else:
+        profile.followers.add(request.user)
+        Notification.objects.create(
+            user=target_user,
+            notification_type='follow',
+            actor=request.user,
+            content=f"{request.user.username} started following you",
+        )
+
+    return redirect('user_profile', username=username)
+
+@login_required(login_url='login')
+def followers(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = user.profile
+    context = {
+        'profile_user': user,
+        'profile': profile,
+        'list_type': 'Followers',
+        'list_users': profile.followers.all(),
+        'request_user_following': User.objects.filter(profile__followers=request.user),
+        'is_own_profile': request.user == user,
+    }
+    return render(request, 'follow_list.html', context)
+
+@login_required(login_url='login')
+def following(request, username):
+    user = get_object_or_404(User, username=username)
+    profile = user.profile
+    context = {
+        'profile_user': user,
+        'profile': profile,
+        'list_type': 'Following',
+        'list_users': User.objects.filter(profile__followers=user),
+        'request_user_following': User.objects.filter(profile__followers=request.user),
+        'is_own_profile': request.user == user,
+    }
+    return render(request, 'follow_list.html', context)
+
+@login_required(login_url='login')
+@require_POST
+def delete_post(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if post.author != request.user:
+        return redirect('home')
+    post.delete()
+    return redirect(request.META.get('HTTP_REFERER', 'home'))
+
+@login_required(login_url='login')
+def discover_people(request):
+    # Get users the current user is not following and who are not the current user
+    current_user = request.user
+    users_following = current_user.profile.followers.all()
+    
+    # Recommended users: those not yet followed
+    recommended_users = User.objects.exclude(
+        Q(id=current_user.id) | Q(id__in=users_following)
+    )[:20]  # Limit to 20 recommendations
+    
+    context = {
+        'recommended_users': recommended_users,
+        'users_following': users_following,
+    }
+    return render(request, 'discover_people.html', context)
 
 @login_required(login_url='login')
 def edit_profile(request):
@@ -99,7 +178,7 @@ def edit_profile(request):
             profile.profile_picture = request.FILES['profile_picture']
         
         profile.save()
-        return redirect('profile', username=request.user.username)
+        return redirect('user_profile', username=request.user.username)
     
     return render(request, 'edit_profile.html', {'profile': profile})
 
