@@ -71,18 +71,18 @@ Deployment: Gunicorn, Render
 
 
 📁 Project Structure
-campus-connect/
-├── campus_connect/        # Django project settings and URL routing
-├── home/                  # Core app
-│   ├── models.py          # All data models
-│   ├── views.py           # Page logic and actions
-│   └── urls.py            # App routes
-├── templates/             # HTML templates
-├── static/                # CSS, JS, static assets
-├── media/                 # User uploaded images
-├── requirements.txt       # Python dependencies
-├── Procfile               # Deployment config
-└── manage.py
+           campus-connect/
+           ├── campus_connect/        # Django project settings and URL routing
+           ├── home/                  # Core app
+           │   ├── models.py          # All data models
+           │   ├── views.py           # Page logic and actions
+           │   └── urls.py            # App routes
+           ├── templates/             # HTML templates
+           ├── static/                # CSS, JS, static assets
+           ├── media/                 # User uploaded images
+           ├── requirements.txt       # Python dependencies
+           ├── Procfile               # Deployment config
+           └── manage.py
 
 ⚙️ Getting Started
 Prerequisites
